@@ -31,8 +31,20 @@ public class MemberController {
     @PostMapping(value = "/new")
     public String memberForm(@Valid MemberFormDto memberFormDto, BindingResult bindingResult, Model model) {
 
-        Member member = Member.createMember(memberFormDto, passwordEncoder);
-        memberService.saveMember(member);
+        if (bindingResult.hasErrors()) {
+            return "/member/memberForm";
+        }
+
+        try {
+            Member member = Member.createMember(memberFormDto, passwordEncoder);
+            memberService.saveMember(member);
+        } catch (IllegalStateException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "member/memberForm";
+        }
+
+        return "redirect:/members/login";
+    }
 
         return "redirect:/";
     }
