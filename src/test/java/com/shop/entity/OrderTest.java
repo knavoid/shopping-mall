@@ -75,8 +75,6 @@ public class OrderTest {
     @DisplayName("영속성 전이 테스트")
     public void cascadeTest() {
         Order order = createOrder();
-        orderRepository.save(order);
-
         em.flush();
         em.clear();
 
@@ -90,11 +88,26 @@ public class OrderTest {
     public void orphanRemovalTest() {
         Order order = createOrder();
         order.getOrderItems().remove(0);
-
         em.flush();
 
         List<OrderItem> savedOrderItem = orderItemRepository.findByOrder(order);
         assertEquals(2, savedOrderItem.size());
+    }
+
+    @Test
+    @DisplayName("지연 로딩 테스트")
+    public void lazyLoadingTest() {
+        Order order = createOrder();
+        Long orderItemId = order.getOrderItems().get(0).getId();
+        em.flush();
+        em.clear();
+
+        // HibernateProxy 객체 (지연 로딩)
+        OrderItem orderItem = orderItemRepository.findById(orderItemId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        // 실제 사용 시점에 조회 쿼리문 실행
+        orderItem.getOrder().getOrderDate();
     }
 
 }
