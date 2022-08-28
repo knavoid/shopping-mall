@@ -14,7 +14,7 @@ public class OrderItem {
     @Id
     @Column(name = "order_item_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long order_item_id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "item_id")
