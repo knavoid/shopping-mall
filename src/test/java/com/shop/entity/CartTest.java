@@ -9,13 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -36,7 +34,7 @@ public class CartTest {
     @PersistenceContext
     EntityManager em;
 
-    public Member createMember(){
+    public Member createMember() {
         MemberFormDto memberFormDto = new MemberFormDto();
         memberFormDto.setEmail("test@email.com");
         memberFormDto.setName("홍길동");
@@ -58,8 +56,7 @@ public class CartTest {
         em.flush();
         em.clear();
 
-        Cart savedCart = cartRepository.findById(cart.getId())
-                        .orElseThrow(EntityNotFoundException::new);
+        Cart savedCart = cartRepository.findById(cart.getId()).orElseThrow(EntityNotFoundException::new);
         assertEquals(member.getId(), savedCart.getMember().getId());
     }
 }
