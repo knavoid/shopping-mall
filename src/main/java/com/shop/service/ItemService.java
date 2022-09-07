@@ -29,14 +29,16 @@ public class ItemService {
 
         // 이미지 등록
         for (int i = 0; i < itemImgFileList.size(); i++) {
-            ItemImg itemImg = new ItemImg();
-            itemImg.setItem(item);
-            if (i == 0) {
-                itemImg.setRepImgYn("Y");
-            } else {
-                itemImg.setRepImgYn("N");
+            if (!itemImgFileList.get(i).isEmpty()) {
+                ItemImg itemImg = new ItemImg();
+                itemImg.setItem(item);
+                if (i == 0) {
+                    itemImg.setRepImgYn("Y");
+                } else {
+                    itemImg.setRepImgYn("N");
+                }
+                itemImgService.saveItemImg(itemImg, itemImgFileList.get(i));
             }
-            itemImgService.saveItemImg(itemImg, itemImgFileList.get(i));
         }
         return item.getId();
     }

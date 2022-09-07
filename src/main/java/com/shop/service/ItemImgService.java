@@ -24,15 +24,11 @@ public class ItemImgService {
     private final FileService fileService;
 
     public void saveItemImg(ItemImg itemImg, MultipartFile itemImgFile) throws IOException {
-        String oriImgName = itemImgFile.getOriginalFilename();
-        String imgName = "";
-        String imgUrl = "";
 
-        // 파일 업로드
-        if (!StringUtils.isEmpty(oriImgName)) {
-            imgName = fileService.uploadFile(itemImgLocation, oriImgName, itemImgFile.getBytes());
-            imgUrl = "/images/item/" + imgName;
-        }
+        // 이미지 파일 업로드
+        String oriImgName = itemImgFile.getOriginalFilename();
+        String imgName = fileService.uploadFile(itemImgLocation, Objects.requireNonNull(oriImgName), itemImgFile.getBytes());
+        String imgUrl = "/images/item/" + imgName;
 
         // 상품 이미지 정보 저장
         itemImg.updateItemImg(oriImgName, imgName, imgUrl);
