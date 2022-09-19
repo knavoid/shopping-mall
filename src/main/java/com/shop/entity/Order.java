@@ -32,4 +32,24 @@ public class Order extends BaseEntity {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    public static Order createOrder(Member member, List<OrderItem> orderItemList) {
+        Order order = new Order();
+        order.setMember(member);
+        order.setOrderDate(LocalDateTime.now());
+        order.setOrderStatus(OrderStatus.ORDER);
+        for (OrderItem orderItem : orderItemList) {
+            order.orderItems.add(orderItem);
+            orderItem.setOrder(order);
+        }
+        return order;
+    }
+
+    public int getTotalPrice() {
+        int totalPrice = 0;
+        for (OrderItem orderItem : orderItems) {
+            totalPrice += orderItem.getTotalPrice();
+        }
+        return totalPrice;
+    }
+
 }
