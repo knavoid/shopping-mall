@@ -31,7 +31,6 @@ public class OrderService {
     private final ItemImgRepository itemImgRepository;
 
     public Long order(OrderDto orderDto, String email) {
-
         Item item = itemRepository.findById(orderDto.getItemId()).orElseThrow(EntityNotFoundException::new);
         Member member = memberRepository.findByEmail(email);
         List<OrderItem> orderItemList = new ArrayList<>();
@@ -46,7 +45,6 @@ public class OrderService {
     }
 
     public Page<OrderHistDto> getOrderList(String email, Pageable pageable) {
-
         List<Order> orders = orderRepository.findOrders(email, pageable);
         Long totalCount = orderRepository.countOrder(email);
 
@@ -66,7 +64,6 @@ public class OrderService {
     }
 
     public boolean validateOrder(Long orderId, String email) {
-
         Order order = orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new);
         Member member = memberRepository.findByEmail(email);
 

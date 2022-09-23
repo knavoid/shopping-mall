@@ -32,7 +32,6 @@ public class OrderController {
     @PostMapping(value = "/order")
     public @ResponseBody ResponseEntity order(@RequestBody @Valid OrderDto orderDto, BindingResult bindingResult,
                                               @AuthenticationPrincipal User user) {
-
         if (bindingResult.hasErrors()) {
             StringBuilder sb = new StringBuilder();
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -57,7 +56,6 @@ public class OrderController {
     @GetMapping(value = {"/orders", "/orders/{page}"})
     public String orderHist(@PathVariable("page") Optional<Integer> page, Model model,
                             @AuthenticationPrincipal User user) {
-
         Pageable pageable = PageRequest.of(page.orElse(0), 4);
         Page<OrderHistDto> orderHistDtoPage = orderService.getOrderList(user.getUsername(), pageable);
 
@@ -71,7 +69,6 @@ public class OrderController {
     @PostMapping(value = "/orders/{orderId}/cancel")
     public @ResponseBody ResponseEntity cancelOrder(@PathVariable("orderId") Long orderId,
                                                     @AuthenticationPrincipal User user) {
-
         if (orderService.validateOrder(orderId, user.getUsername())) {
             return new ResponseEntity<>("주문 취소 권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
