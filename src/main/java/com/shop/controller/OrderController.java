@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,7 +29,8 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping(value = "/order")
-    public @ResponseBody ResponseEntity order(@RequestBody @Valid OrderDto orderDto, BindingResult bindingResult, Principal principal) {
+    public @ResponseBody ResponseEntity order(@RequestBody @Valid OrderDto orderDto, BindingResult bindingResult,
+                                              @AuthenticationPrincipal User user) {
 
         if (bindingResult.hasErrors()) {
             StringBuilder sb = new StringBuilder();
@@ -35,25 +38,27 @@ public class OrderController {
             for (FieldError fieldError : fieldErrors) {
                 sb.append(fieldError.getDefaultMessage());
             }
-            return new ResponseEntity<String>(sb.toString(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
         }
 
-        String email = principal.getName();
+        String email = user.getUsername();
+        System.out.println("-------------------" + email);
         Long orderId;
         try {
             orderId = orderService.order(orderDto, email);
         } catch (Exception e) {
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<Long>(orderId, HttpStatus.OK);
+        return new ResponseEntity<>(orderId, HttpStatus.OK);
     }
 
     @GetMapping(value = {"/orders", "/orders/{page}"})
-    public String orderHist(@PathVariable("page") Optional<Integer> page, Principal principal, Model model) {
+    public String orderHist(@PathVariable("page") Optional<Integer> page, Model model,
+                            @AuthenticationPrincipal User user) {
 
         Pageable pageable = PageRequest.of(page.orElse(0), 4);
-        Page<OrderHistDto> orderHistDtoPage = orderService.getOrderList(principal.getName(), pageable);
+        Page<OrderHistDto> orderHistDtoPage = orderService.getOrderList(user.getUsername(), pageable);
 
         model.addAttribute("orders", orderHistDtoPage);
         model.addAttribute("page", pageable.getPageNumber());
