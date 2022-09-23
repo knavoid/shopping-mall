@@ -32,6 +32,14 @@ public class Order extends BaseEntity {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems = new ArrayList<>();
 
+    public int getTotalPrice() {
+        int totalPrice = 0;
+        for (OrderItem orderItem : orderItems) {
+            totalPrice += orderItem.getTotalPrice();
+        }
+        return totalPrice;
+    }
+
     public static Order createOrder(Member member, List<OrderItem> orderItemList) {
         Order order = new Order();
         order.setMember(member);
@@ -44,12 +52,11 @@ public class Order extends BaseEntity {
         return order;
     }
 
-    public int getTotalPrice() {
-        int totalPrice = 0;
-        for (OrderItem orderItem : orderItems) {
-            totalPrice += orderItem.getTotalPrice();
+    public void cancel() {
+        this.orderStatus = OrderStatus.CANCEL;
+        for (OrderItem orderItem : this.orderItems) {
+            orderItem.cancel();
         }
-        return totalPrice;
     }
 
 }
