@@ -1,5 +1,6 @@
 package com.shop.controller;
 
+import com.shop.dto.CartDetailDto;
 import com.shop.dto.CartItemDto;
 import com.shop.service.CartService;
 import lombok.RequiredArgsConstructor;
@@ -8,8 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -45,6 +48,13 @@ public class CartController {
         }
 
         return new ResponseEntity<>(cartItemId, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/cart")
+    public String orderHist(@AuthenticationPrincipal User user, Model model) {
+        List<CartDetailDto> cartDetailDtoList = cartService.getCartList(user.getUsername());
+        model.addAttribute("cartItems", cartDetailDtoList);
+        return "cart/cartList";
     }
 
 }
