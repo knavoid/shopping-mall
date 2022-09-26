@@ -42,7 +42,6 @@ public class OrderController {
         }
 
         String email = user.getUsername();
-        System.out.println("-------------------" + email);
         Long orderId;
         try {
             orderId = orderService.order(orderDto, email);
@@ -66,10 +65,10 @@ public class OrderController {
         return "order/orderHist";
     }
 
-    @PostMapping(value = "/orders/{orderId}/cancel")
+    @PostMapping(value = "/order/{orderId}/cancel")
     public @ResponseBody ResponseEntity cancelOrder(@PathVariable("orderId") Long orderId,
                                                     @AuthenticationPrincipal User user) {
-        if (orderService.validateOrder(orderId, user.getUsername())) {
+        if (!orderService.validateOrder(orderId, user.getUsername())) {
             return new ResponseEntity<>("주문 취소 권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
 
