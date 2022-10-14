@@ -2,6 +2,7 @@
 
 > Spring Boot, Spring Data JPA, Spring Security 등의 기술스택을 이용하여 하나의 쇼핑몰 서비스를 구현합니다. 사용되는 기술들에 대한 익숙한 활용과 전체적인 개발 흐름을 파악하는 것에 중점을 두고 프로젝트를 진행하였습니다.
 
+<br>
 
 ## 🔧 Tech Stack
 
@@ -14,33 +15,35 @@
 #### Front
 - HTML, CSS, Javascript, Thymeleaf
 
+<br>
 
 ## 📱 Services
 
 
 #### ✔ Member
 >- 회원가입, 로그인/로그아웃
-- 역할(admin, user)에 따른 권한 설정
+>- 역할(admin, user)에 따른 권한 설정
 
 #### ✔ Item
 >- 상품 등록 - `create`
-- 상품 조회 - `read`
-  - 조회를 위한 조건 필터링 및 검색 기능
-  - 관리자와 일반 회원에 따른 조회 
-- 상품 관리 - `update` `delete`
+>- 상품 조회 - `read`
+>  - 조회를 위한 조건 필터링 및 검색 기능
+>  - 관리자와 일반 회원에 따른 조회 
+>- 상품 관리 - `update` `delete`
 
 #### ✔ Order
 >- 상품 주문 - `create`
-- 주문 내역 조회 - `read`
-- 주문 취소 - `delete`
+>- 주문 내역 조회 - `read`
+>- 주문 취소 - `delete`
 
 #### ✔ Cart
 >- 장바구니에 상품 추가 - `create`
-- 장바구니 조회 - `read`
-- 장바구니 상품 정보 수정 - `update`
-- 장바구니에 있는 상품 삭제 - `delete`
-- 장바구니에 있는 상품 주문
+>- 장바구니 조회 - `read`
+>- 장바구니 상품 정보 수정 - `update`
+>- 장바구니에 있는 상품 삭제 - `delete`
+>- 장바구니에 있는 상품 주문
 
+<br>
 
 ## 💾 Database Design
 
@@ -54,15 +57,16 @@
 - `cart` : 회원들이 생성한 장바구니 정보 테이블
 - `cart_item` : 장바구니에 담긴 상품 정보 테이블
 
+<br>
 
 ## 📑 API Design
 
 <table>
   
   <tr>
-    <th align="center" width="300">Method</th>
+    <th align="center" width="200">Method</th>
     <th align="center" width="300">URL</th>
-    <th align="center" width="600">Description</th>
+    <th align="center" width="300">Description</th>
   </tr>
   
   <tr>
